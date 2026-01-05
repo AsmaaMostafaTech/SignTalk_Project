@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignTalk - ترجمة لغة الإشارة</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- TensorFlow.js and HandPose model (loaded in the head to ensure availability) -->
+    <script>
+      // Global flag to track if models are loaded
+      window.tfjsLoaded = false;
+      window.handposeLoaded = false;
+      window.appInitialized = false;
+      
+      // Function to initialize the application
+      function initApplication() {
+        // Only initialize once
+        if (window.appInitialized) return;
+        
+        if (window.tfjsLoaded && window.handposeLoaded) {
+          window.appInitialized = true;
+          console.log('Initializing application...');
+          
+          // Configure TensorFlow.js
+          try {
+            if (typeof tf !== 'undefined') {
+              tf.ENV.set('DEBUG', false);
+              tf.ENV.set('WEBGL_CPU_FORWARD', false);
+              console.log('TensorFlow.js configured successfully');
+              
+              // Initialize the app
+              if (typeof init === 'function') {
+                console.log('Calling init() function');
+                init();
+              } else {
+                console.warn('init() function not found');
+              }
+            } else {
+              console.error('TensorFlow.js is not available');
+            }
+          } catch (e) {
+            console.error('Error initializing application:', e);
+          }
+        }
+      }
+      
+      // Load TensorFlow.js
+      (function() {
+        // Check if already loaded
+        if (typeof tf !== 'undefined') {
+          console.log('TensorFlow.js already loaded');
+          window.tfjsLoaded = true;
+          initApplication();
+          return;
+        }
+
+        const tfScript = document.createElement('script');
+        tfScript.src = 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js';
+        tfScript.onload = function() {
+          console.log('TensorFlow.js loaded successfully');
+          window.tfjsLoaded = true;
+          initApplication();
+        };
+        tfScript.onerror = function() {
+          console.error('Failed to load TensorFlow.js');
+        };
+        document.head.appendChild(tfScript);
+      })();
+      
+      // Load HandPose model
+      (function() {
+        // Check if already loaded
+        if (typeof handpose !== 'undefined') {
+          console.log('HandPose already loaded');
+          window.handposeLoaded = true;
+          initApplication();
+          return;
+        }
+
+        const handposeScript = document.createElement('script');
+        handposeScript.src = 'https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose@0.0.7/dist/handpose.min.js';
+        handposeScript.onload = function() {
+          console.log('HandPose model loaded successfully');
+          window.handposeLoaded = true;
+          initApplication();
+        };
+        handposeScript.onerror = function() {
+          console.error('Failed to load HandPose model');
+        };
+        document.head.appendChild(handposeScript);
+      })();
+    </script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <span>SignTalk</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">الرئيسية</a></li>
+                <li><a href="about.html">عن التطبيق</a></li>
+                <li><a href="how-it-works.html">كيف يعمل</a></li>
+                <li><a href="contact.html">اتصل بنا</a></li>
+            </ul>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 20px; min-height: calc(100vh - 160px); display: flex; flex-direction: column;">
+        <!-- Hero Section -->
+        <section class="hero-section" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9f0f7 100%); border-radius: 20px; padding: 50px; margin: 20px 0 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); position: relative; overflow: hidden; flex: 1; display: flex; flex-direction: column; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
+            <!-- Decorative Elements -->
+            <div style="position: absolute; top: -50px; left: -50px; width: 200px; height: 200px; border-radius: 50%; background: rgba(74, 111, 165, 0.1); z-index: 0;"></div>
+            <div style="position: absolute; bottom: -80px; right: -80px; width: 300px; height: 300px; border-radius: 50%; background: rgba(137, 192, 230, 0.15); z-index: 0;"></div>
+            <!-- Decorative Background Elements -->
+            <div style="position: absolute; top: -100px; left: -100px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(74, 111, 165, 0.06) 0%, rgba(74, 111, 165, 0) 70%); z-index: 0; animation: float 12s ease-in-out infinite; filter: blur(40px); opacity: 0.8;"></div>
+            <div style="position: absolute; bottom: -150px; right: -150px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(137, 192, 230, 0.15) 0%, rgba(137, 192, 230, 0) 70%); z-index: 0; animation: float 15s ease-in-out infinite 1s; filter: blur(45px); opacity: 0.8;"></div>
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; max-width: 1000px; height: 100%; background: radial-gradient(ellipse at center, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 80%); z-index: 0;"></div>
+            
+            <!-- Subtle Grid Pattern -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(rgba(74, 111, 165, 0.05) 1px, transparent 1px); background-size: 30px 30px; opacity: 0.6; z-index: 0;"></div>
+            
+            <!-- Animated Gradient Border -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #4a6fa5, #89c0e6, #4a6fa5); background-size: 200% 200%; animation: gradient 8s ease infinite; z-index: 2;"></div>
+            
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 40px; position: relative; z-index: 1; margin: auto; max-width: 1400px; width: 100%; padding: 40px 20px; flex-wrap: nowrap;">
+                <!-- Text Content -->
+                <div style="flex: 1; min-width: 500px; max-width: 600px; position: relative; padding: 20px; transform: translateY(0); transition: transform 0.3s ease, opacity 0.3s ease;" class="hero-content">
+                    <span style="display: inline-block; color: #4a6fa5; font-weight: 700; font-size: 1.05rem; margin-bottom: 24px; position: relative; padding: 10px 22px; background: rgba(74, 111, 165, 0.08); border-radius: 50px; backdrop-filter: blur(8px); border: 1px solid rgba(74, 111, 165, 0.08); box-shadow: 0 2px 12px rgba(74, 111, 165, 0.05); transform: translateZ(0); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); animation: fadeInUp 0.6s ease-out;" onmouseover="this.style.background='rgba(74, 111, 165, 0.12)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(74, 111, 165, 0.08)'; this.style.transform='translateY(0)';">
+                        <i class="fas fa-circle" style="color: #4a6fa5; font-size: 0.5rem; margin-left: 10px; vertical-align: middle;"></i>
+                        تواصل بلا حدود
+                    </span>
+                    <h1 style="color: #1a2b4d; font-size: 3rem; margin: 0 0 32px 0; line-height: 1.2; font-weight: 800; letter-spacing: -0.5px; position: relative; text-shadow: 0 2px 4px rgba(0,0,0,0.02); animation: fadeInUp 0.6s ease-out 0.1s both; font-family: 'Tajawal', sans-serif;">
+                        جسر التواصل بين <span style="color: #4a6fa5; position: relative; display: inline-block;">الصم والناطقين
+                        <span style="position: absolute; bottom: 8px; right: 0; width: 100%; height: 10px; background: rgba(74, 111, 165, 0.12); border-radius: 6px; z-index: -1; transform: rotate(-0.5deg);"></span></span>
+                    </h1>
+                    <p class="hero-subtitle" style="font-size: 1.25rem; color: #4a5568; margin: 0 0 40px 0; line-height: 1.8; max-width: 520px; font-weight: 400; position: relative; opacity: 0.95; animation: fadeInUp 0.6s ease-out 0.2s both; letter-spacing: -0.2px;">
+                        منصة ذكية متكاملة تترجم لغة الإشارة إلى كلام مسموع ونص مكتوب بدقة عالية، لتحقيق تواصل فعال وسلس بين الصم والبكم والمجتمع.
+                    </p>
+                    
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; animation: fadeInUp 0.6s ease-out 0.3s both;" class="cta-buttons">
+                        <a href="how-it-works.html" class="btn" style="background: linear-gradient(135deg, #4a6fa5 0%, #3a5a8c 100%); color: white; padding: 16px 36px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.05rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s ease; border: none; box-shadow: 0 8px 20px rgba(74, 111, 165, 0.15), 0 4px 8px rgba(0,0,0,0.05); position: relative; overflow: hidden; z-index: 1; will-change: transform, box-shadow;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 25px rgba(74, 111, 165, 0.2), 0 4px 8px rgba(0,0,0,0.05)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 20px rgba(74, 111, 165, 0.15), 0 4px 8px rgba(0,0,0,0.05)';">
+                            <span style="position: relative; z-index: 3; display: flex; align-items: center;">
+                                <i class="fas fa-play" style="margin-left: 10px; font-size: 0.9rem; transition: transform 0.3s ease;"></i> كيف يعمل
+                            </span>
+                            <span style="position: absolute; width: 0; height: 0; background: rgba(255,255,255,0.25); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), height 0.6s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2; opacity: 0;"></span>
+                        </a>
+                        <a href="#demo" class="btn" style="background: white; color: #4a6fa5; padding: 16px 36px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.05rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s ease; border: 2px solid rgba(74, 111, 165, 0.1); box-shadow: 0 8px 20px rgba(0,0,0,0.03); position: relative; overflow: hidden; z-index: 1; will-change: transform, box-shadow, border-color;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 25px rgba(0,0,0,0.06)'; this.style.borderColor='rgba(74, 111, 165, 0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.03)'; this.style.borderColor='rgba(74, 111, 165, 0.1)';">
+                            <span style="position: relative; z-index: 3; display: flex; align-items: center;">
+                                <i class="fas fa-eye" style="margin-left: 10px; font-size: 0.9rem; transition: transform 0.3s ease;"></i> جربه الآن
+                            </span>
+                            <span style="position: absolute; width: 0; height: 0; background: rgba(74, 111, 165, 0.05); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), height 0.6s cubic-bezier(0.4, 0, 0.2, 1); z-index: 0; opacity: 0;"></span>
+                        </a>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 28px; position: relative; z-index: 1; animation: fadeInUp 0.6s ease-out 0.4s both;" class="features-list">
+                        <div style="display: flex; align-items: center; background: rgba(255, 255, 255, 0.9); padding: 12px 24px; border-radius: 50px; box-shadow: 0 8px 25px rgba(0,0,0,0.03); border: 1px solid rgba(74, 111, 165, 0.08); backdrop-filter: blur(8px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateY(0);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(0,0,0,0.05)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.03)';">
+                            <div style="width: 28px; height: 28px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; margin-left: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 8px rgba(16, 185, 129, 0.15); transition: transform 0.3s ease;">
+                                <i class="fas fa-check" style="color: white; font-size: 0.7rem;"></i>
+                            </div>
+                            <span style="font-weight: 600; color: #1e293b; font-size: 1.05rem;">دقة عالية</span>
+                        </div>
+                        <div style="display: flex; align-items: center; background: rgba(255, 255, 255, 0.9); padding: 10px 20px; border-radius: 50px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border: 1px solid rgba(255,255,255,0.8); backdrop-filter: blur(8px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s; transform: translateY(0);">
+                            <div style="width: 28px; height: 28px; background: linear-gradient(135deg, #4a6fa5 0%, #3a5a8c 100%); border-radius: 50%; margin-left: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 8px rgba(74, 111, 165, 0.15); transition: transform 0.3s ease;">
+                                <i class="fas fa-check" style="color: white; font-size: 0.7rem;"></i>
+                            </div>
+                            <span style="font-weight: 600; color: #1e293b; font-size: 1.05rem;">سهولة الاستخدام</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Camera Panel -->
+                <div class="panel" style="flex: 1; min-width: 500px; max-width: 800px; background: white; border-radius: 20px; padding: 0; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1), 0 15px 30px -10px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); position: sticky; top: 40px; overflow: hidden; transform-style: preserve-3d; perspective: 1000px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);" onmouseover="this.style.transform='translateY(-8px) rotateX(2deg)'; this.style.boxShadow='0 30px 60px -15px rgba(0,0,0,0.1), 0 20px 30px -15px rgba(0,0,0,0.04)';" onmouseout="this.style.transform='translateY(0) rotateX(0)'; this.style.boxShadow='0 25px 50px -12px rgba(0,0,0,0.1), 0 15px 30px -10px rgba(0,0,0,0.03)';">
+                    <!-- Header with gradient accent -->
+                    <div style="position: relative; padding: 30px 30px 20px; background: linear-gradient(135deg, #f8f9fa 0%, #edf2f7 100%); border-bottom: 1px solid rgba(0,0,0,0.03);">
+                        <div style="position: absolute; top: 0; right: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #4a6fa5 0%, #89c0e6 100%);"></div>
+                        <h2 style="color: #2d3748; font-size: 1.5rem; margin: 0 0 10px 0; font-weight: 700; position: relative; display: inline-block; padding: 0 15px;">
+                            <span style="position: relative; z-index: 1; display: flex; align-items: center;">
+                                <i class="fas fa-hands" style="margin-left: 10px; color: #4a6fa5; font-size: 1.2em;"></i>
+                                كاميرا الترجمة
+                            </span>
+                            <span style="position: absolute; bottom: 0; right: 0; width: 100%; height: 6px; background: linear-gradient(90deg, rgba(74, 111, 165, 0.2) 0%, rgba(137, 192, 230, 0.2) 100%); border-radius: 3px; z-index: 0; transform: translateY(4px);"></span>
+                        </h2>
+                        <p style="color: #4a5568; font-size: 0.95rem; margin: 10px 0 0; line-height: 1.6; max-width: 600px;">
+                            قم بتوجيه يدك نحو الكاميرا لبدء الترجمة الفورية إلى نص مكتوب
+                        </p>
+                    </div>
+                    <!-- Camera Container -->
+                    <div class="camera-container">
+                        <!-- Camera Feed -->
+                        <div class="camera-feed">
+                            <video id="video" autoplay playsinline style="display: none;"></video>
+                            <img id="placeholder-image" src="signtalk.jpeg" alt="SignTalk in Action">
+                            <canvas id="canvas"></canvas>
+                            
+                            <!-- Camera Controls -->
+                            <div class="camera-controls" style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+                                <button id="camera-toggle" class="camera-btn" title="تشغيل/إيقاف الكاميرا" style="background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                                    <i class="fas fa-camera" style="margin-left: 8px;"></i> تشغيل الكاميرا
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Detection Results -->
+                    <div class="detection-result">
+                        <!-- Decorative Accent -->
+                        <div class="result-accent"></div>
+                        
+                        <div class="result-header">
+                            <i class="fas fa-hand-paper"></i>
+                            <h3>نتيجة الترجمة</h3>
+                        </div>
+                        
+                        <div class="result-content">
+                            <p id="detection-text">
+                                <span class="placeholder-text">سيظهر نص الترجمة هنا...</span>
+                            </p>
+                            
+                            <div class="result-actions">
+                                <button id="copy-text" class="btn btn-secondary" title="نسخ النص">
+                                    <i class="far fa-copy"></i>
+                                    <span>نسخ النص</span>
+                                </button>
+                                <button id="clear-text" class="btn btn-outline" title="مسح النص">
+                                    <i class="fas fa-eraser"></i>
+                                    <span>مسح</span>
+                                </button>
+                                <button id="speak-text" class="btn btn-icon" title="قراءة النص">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="confidence-meter">
+                                <div class="confidence-bar">
+                                    <div class="confidence-level" style="width: 0%;"></div>
+                                </div>
+                                <span class="confidence-value">0%</span>
+                            </div>
+                        </div>
+                        </button>
+                    </div>
+                    
+                    <div style="margin-top: 16px; text-align: center; padding: 0 8px; animation: fadeIn 0.6s ease-out 0.1s both;" class="info-tooltip">
+                        <p style="color: #94a3b8; font-size: 0.8rem; margin: 0; display: inline-flex; align-items: center; justify-content: center; gap: 6px; line-height: 1.4; background: rgba(255,255,255,0.9); padding: 8px 16px; border-radius: 8px; border: 1px dashed rgba(138, 180, 230, 0.3); box-shadow: 0 2px 10px rgba(0,0,0,0.02); transition: all 0.3s ease;">
+                            <i class="fas fa-info-circle" style="color: #89c0e6; font-size: 0.9rem; flex-shrink: 0;"></i>
+                            <span>اضغط على الزر أعلاه لتحويل النص إلى كلام مسموع</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats Bar -->
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin-top: auto; padding-top: 40px; border-top: 1px solid rgba(0,0,0,0.04); position: relative; max-width: 900px; margin-left: auto; margin-right: auto; width: 100%;">
+                <!-- Decorative Elements -->
+                <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%) translateY(-50%); background: white; padding: 0 28px; font-size: 0.9rem; color: #64748b; font-weight: 600; white-space: nowrap; box-shadow: 0 6px 20px -5px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03); border-radius: 50px; backdrop-filter: blur(8px);">
+                    <i class="fas fa-chart-line" style="margin-left: 8px; color: #4a6fa5;"></i>
+                    إحصائيات المنصة
+                </div>
+                
+                <div style="text-align: center; padding: 0 25px; margin-bottom: 20px; position: relative; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <div style="width: 70px; height: 70px; background: rgba(74, 111, 165, 0.06); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; position: relative; z-index: 1; transition: all 0.3s ease;">
+                        <div style="position: absolute; width: 80%; height: 80%; border: 2px solid rgba(74, 111, 165, 0.2); border-radius: 50%; animation: pulse 3s infinite;"></div>
+                        <i class="fas fa-users" style="font-size: 1.5rem; color: #4a6fa5;"></i>
+                    </div>
+                    <div style="font-size: 2.4rem; font-weight: 800; color: transparent; margin-bottom: 6px; line-height: 1.1; position: relative; display: inline-block; font-family: 'Tajawal', sans-serif; background: linear-gradient(135deg, #2c3e50 0%, #4a6fa5 100%); -webkit-background-clip: text; background-clip: text;">
+                        <span class="counter" data-target="10000">0</span>+
+                    </div>
+                    <div style="color: #64748b; font-size: 0.95rem; font-weight: 500; opacity: 0.9; letter-spacing: -0.2px;">مستخدم نشط</div>
+                </div>
+                
+                <div style="text-align: center; padding: 0 25px; margin-bottom: 20px; position: relative; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <div style="width: 70px; height: 70px; background: rgba(16, 185, 129, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; position: relative; z-index: 1;">
+                        <div style="position: absolute; width: 80%; height: 80%; border: 2px solid rgba(16, 185, 129, 0.2); border-radius: 50%; animation: pulse 3s infinite 0.3s;"></div>
+                        <i class="fas fa-chart-pie" style="font-size: 1.5rem; color: #10b981;"></i>
+                    </div>
+                    <div style="font-size: 2.4rem; font-weight: 800; color: transparent; margin-bottom: 6px; line-height: 1.1; position: relative; display: inline-block; font-family: 'Tajawal', sans-serif; background: linear-gradient(135deg, #2c3e50 0%, #4a6fa5 100%); -webkit-background-clip: text; background-clip: text;">
+                        <span class="counter" data-target="98">0</span>%
+                    </div>
+                    <div style="color: #64748b; font-size: 0.95rem; font-weight: 500;">دقة الترجمة</div>
+                </div>
+                
+                <div style="text-align: center; padding: 0 25px; margin-bottom: 20px; position: relative; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <div style="width: 70px; height: 70px; background: rgba(245, 158, 11, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; position: relative; z-index: 1;">
+                        <div style="position: absolute; width: 80%; height: 80%; border: 2px solid rgba(245, 158, 11, 0.2); border-radius: 50%; animation: pulse 3s infinite 0.6s;"></div>
+                        <i class="fas fa-headset" style="font-size: 1.5rem; color: #f59e0b;"></i>
+                    </div>
+                    <div style="font-size: 2.4rem; font-weight: 800; color: transparent; margin-bottom: 6px; line-height: 1.1; position: relative; display: inline-block; font-family: 'Tajawal', sans-serif; background: linear-gradient(135deg, #2c3e50 0%, #4a6fa5 100%); -webkit-background-clip: text; background-clip: text;">
+                        24/7
+                    </div>
+                    <div style="color: #64748b; font-size: 0.95rem; font-weight: 500;">دعم فني</div>
+                </div>
+            </div>
+        </section>
+        
+        <style>
+            @keyframes pulse {
+                0% { transform: scale(1); opacity: 0.8; }
+                50% { transform: scale(1.05); opacity: 0.5; }
+                100% { transform: scale(1); opacity: 0.8; }
+            }
+            
+            @keyframes float {
+                0% { transform: translateY(0px) rotate(0deg); }
+                50% { transform: translateY(-12px) rotate(1deg); }
+                100% { transform: translateY(0px) rotate(0deg); }
+            }
+            
+            @keyframes gradient {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes shimmer {
+                0% { background-position: -200% 0; }
+                100% { background-position: 200% 0; }
+            }
+            
+            .btn {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.1s ease, box-shadow 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 25px rgba(0,0,0,0.15) !important;
+            }
+            
+            .btn:hover i {
+                transform: translateX(3px);
+            }
+            
+            .btn:active {
+                transform: translateY(0);
+            }
+            
+            .btn span:last-child {
+                position: absolute;
+                background: rgba(255,255,255,0.3);
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                pointer-events: none;
+                transition: width 0.6s ease, height 0.6s ease;
+            }
+            
+            .btn:hover span:last-child {
+                width: 300px;
+                height: 300px;
+                opacity: 0;
+            }
+            
+            /* Counter Animation */
+            .counter {
+                display: inline-block;
+            }
+            
+            @media (min-width: 992px) {
+                .panel {
+                    margin-top: 0 !important;
+                    transform: translateY(0);
+                    transition: transform 0.4s ease, box-shadow 0.4s ease;
+                }
+                
+                .panel:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 20px 50px rgba(0,0,0,0.12) !important;
+                }
+            }
+            
+            /* Responsive Adjustments */
+            @media (max-width: 768px) {
+                .hero-section {
+                    padding: 28px 14px !important;
+                    margin: 10px 0 20px !important;
+                    border-radius: 14px !important;
+                }
+                
+                h1 {
+                    font-size: 1.7rem !important;
+                    margin-bottom: 16px !important;
+                }
+                
+                .hero-subtitle {
+                    font-size: 0.95rem !important;
+                    margin-bottom: 20px !important;
+                }
+                
+                .camera-container {
+                    margin: 0 -10px 10px !important;
+                    border-radius: 0 !important;
+                    max-height: 200px !important;
+                }
+                
+                .panel {
+                    margin-top: 14px !important;
+                    max-width: 100% !important;
+                    border-radius: 12px !important;
+                }
+                
+                .detection-result {
+                    padding: 12px 10px !important;
+                }
+                
+                .word-display {
+                    font-size: 1.5rem !important;
+                    min-height: 36px !important;
+                    margin: 4px 0 14px !important;
+                    padding: 8px !important;
+                }
+            }
+        </style>
+        
+
+        
+        <!-- Features Section -->
+        <section class="features-section" style="margin: 80px 0;">
+            <div style="text-align: center; margin-bottom: 60px;">
+                <h2 style="color: #2c3e50; font-size: 2.2rem; margin-bottom: 15px;">لماذا تختار SignTalk؟</h2>
+                <p style="font-size: 1.1rem; color: #4a5568; max-width: 700px; margin: 0 auto; line-height: 1.7;">
+                    نقدم لك أفضل الحلول التقنية لتسهيل التواصل مع مجتمع الصم والبكم
+                </p>
+                <div style="width: 1px; height: 50px; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.08), transparent); margin: 0 15px; align-self: center; opacity: 0.7;"></div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px;">
+                <div style="background: white; border-radius: 15px; padding: 40px 30px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.3s ease; border: 1px solid rgba(59, 130, 246, 0.1);">
+                    <div style="width: 80px; height: 80px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
+                        <i class="fas fa-bolt" style="font-size: 1.8rem; color: #3b82f6;"></i>
+                    </div>
+                    <h3 style="color: #2c3e50; font-size: 1.5rem; margin: 0 0 15px 0;">سرعة فائقة</h3>
+                    <p style="color: #4a5568; line-height: 1.7; margin: 0;">
+                        ترجمة فورية للإشارات إلى كلام ونصوص مكتوبة بسرعة قياسية
+                    </p>
+                </div>
+                
+                <div style="background: white; border-radius: 15px; padding: 40px 30px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.3s ease; border: 1px solid rgba(59, 130, 246, 0.1);">
+                    <div style="width: 80px; height: 80px; background: rgba(16, 185, 129, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
+                        <i class="fas fa-bullseye" style="font-size: 1.8rem; color: #10b981;"></i>
+                    </div>
+                    <h3 style="color: #2c3e50; font-size: 1.5rem; margin: 0 0 15px 0;">دقة عالية</h3>
+                    <p style="color: #4a5568; line-height: 1.7; margin: 0;">
+                        تقنية ذكاء اصطناعي متطورة للتعرف الدقيق على الإشارات
+                    </p>
+                </div>
+                
+                <div style="background: white; border-radius: 15px; padding: 40px 30px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.3s ease; border: 1px solid rgba(59, 130, 246, 0.1);">
+                    <div style="width: 80px; height: 80px; background: rgba(245, 158, 11, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
+                        <i class="fas fa-mobile-alt" style="font-size: 1.8rem; color: #f59e0b;"></i>
+                    </div>
+                    <h3 style="color: #2c3e50; font-size: 1.5rem; margin: 0 0 15px 0;">سهولة الاستخدام</h3>
+                    <p style="color: #4a5568; line-height: 1.7; margin: 0;">
+                        واجهة بسيطة وسهلة الاستخدام لجميع الفئات العمرية
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <i class="fas fa-hands-helping"></i>
+                    <span>SignTalk</span>
+                </div>
+                <p class="footer-about">تطبيق SignTalk يهدف إلى تسهيل التواصل مع مجتمع الصم والبكم من خلال ترجمة لغة الإشارة إلى كلام مسموع.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-heading">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="#home"><i class="fas fa-chevron-left"></i> الرئيسية</a></li>
+                    <li><a href="#about"><i class="fas fa-chevron-left"></i> عن التطبيق</a></li>
+                    <li><a href="#how-it-works"><i class="fas fa-chevron-left"></i> كيف يعمل</a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-left"></i> اتصل بنا</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-heading">معلومات التواصل</h3>
+                <ul class="contact-info">
+                    <li><i class="fas fa-map-marker-alt"></i> القاهرة، مصر</li>
+                    <li><i class="fas fa-phone"></i> +20 123 456 7890</li>
+                    <li><i class="fas fa-envelope"></i> info@signtalk.com</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-heading">النشرة البريدية</h3>
+                <p>اشترك في نشرتنا البريدية لتصلك آخر التحديثات</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="بريدك الإلكتروني" required>
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="container">
+                <p>جميع الحقوق محفوظة &copy; 2023 SignTalk. تم التطوير بواسطة <a href="#">فريق SignTalk</a></p>
+                <div class="footer-bottom-links">
+                    <a href="#">سياسة الخصوصية</a>
+                    <span>|</span>
+                    <a href="#">شروط الاستخدام</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- TensorFlow.js and HandPose -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
+    
+    <!-- Main App -->
+    <script src="app.js" defer></script>
+</body>
+</html>

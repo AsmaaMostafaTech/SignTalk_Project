@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كيف يعمل - SignTalk</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <span>SignTalk</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="about.html">عن التطبيق</a></li>
+                <li><a href="how-it-works.html" class="active">كيف يعمل</a></li>
+                <li><a href="contact.html">اتصل بنا</a></li>
+            </ul>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 20px;">
+        <!-- Hero Section -->
+        <section class="how-it-works-hero" style="background: linear-gradient(135deg, #f0f7ff 0%, #e1effe 100%); border-radius: 20px; padding: 60px 50px; margin: 20px 0 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 50px; flex-wrap: wrap; position: relative; overflow: hidden;">
+            <!-- Decorative Elements -->
+            <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; border-radius: 50%; background: rgba(74, 111, 165, 0.1); z-index: 0;"></div>
+            <div style="position: absolute; bottom: -80px; left: -80px; width: 300px; height: 300px; border-radius: 50%; background: rgba(137, 192, 230, 0.15); z-index: 0;"></div>
+            
+            <div class="hero-content" style="flex: 1; min-width: 300px; position: relative; z-index: 1;">
+                <span style="display: inline-block; background: rgba(74, 111, 165, 0.1); color: #4a6fa5; font-weight: 600; font-size: 1rem; padding: 8px 20px; border-radius: 50px; margin-bottom: 20px;">
+                    <i class="fas fa-play-circle" style="margin-left: 8px;"></i> دليل المستخدم
+                </span>
+                <h1 style="color: #2c3e50; font-size: 2.8rem; margin: 0 0 20px 0; line-height: 1.3; font-weight: 700;">
+                    تعرف على كيفية استخدام <span style="color: #4a6fa5;">تطبيق SignTalk</span> بكل سهولة
+                </h1>
+                <p class="hero-subtitle" style="font-size: 1.25rem; color: #4a5568; margin-bottom: 35px; line-height: 1.8; max-width: 600px;">
+                    دليل شامل يوضح لك خطوة بخطوة كيفية استخدام تطبيقنا لترجمة لغة الإشارة إلى كلام مسموع ونص مكتوب بكل دقة وسهولة.
+                </p>
+                <div class="hero-buttons" style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 30px;">
+                    <a href="#steps" class="btn" style="background: #4a6fa5; color: white; padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: all 0.3s ease; border: 2px solid #4a6fa5; box-shadow: 0 5px 15px rgba(74, 111, 165, 0.3);">
+                        <i class="fas fa-list-ol" style="margin-left: 8px;"></i> الخطوات التفصيلية
+                    </a>
+                    <a href="#video-demo" class="btn" style="background: transparent; color: #4a6fa5; padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: all 0.3s ease; border: 2px solid #4a6fa5;">
+                        <i class="fas fa-play-circle" style="margin-left: 8px;"></i> شاهد الفيديو
+                    </a>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 30px; flex-wrap: wrap; margin-top: 20px;">
+                    <div style="display: flex; align-items: center; background: white; padding: 10px 20px; border-radius: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                        <div style="width: 40px; height: 40px; background: #e3f2fd; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: 10px;">
+                            <i class="fas fa-check" style="color: #1976d2; font-size: 1rem;"></i>
+                        </div>
+                        <span style="font-weight: 600; color: #2c3e50;">سهولة الاستخدام</span>
+                    </div>
+                    <div style="display: flex; align-items: center; background: white; padding: 10px 20px; border-radius: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                        <div style="width: 40px; height: 40px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: 10px;">
+                            <i class="fas fa-bolt" style="color: #2e7d32; font-size: 1rem;"></i>
+                        </div>
+                        <span style="font-weight: 600; color: #2c3e50;">سرعة فائقة</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-image" style="flex: 1; min-width: 300px; position: relative; z-index: 1; text-align: center;">
+                <div style="position: relative; display: inline-block; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.15);">
+                    <img src="signtalk.jpeg" alt="كيف يعمل تطبيق SignTalk" style="max-width: 100%; height: auto; display: block; border: 8px solid white; border-radius: 15px; position: relative; z-index: 2;">
+                    <div style="position: absolute; width: 100%; height: 100%; background: linear-gradient(45deg, rgba(74, 111, 165, 0.3), rgba(137, 192, 230, 0.3)); top: 0; left: 0; z-index: 1; border-radius: 10px;"></div>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3; width: 80px; height: 80px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">
+                        <i class="fas fa-play" style="color: #4a6fa5; font-size: 2rem; margin-right: -5px;"></i>
+                    </div>
+                </div>
+                
+                <div style="background: white; padding: 15px 25px; border-radius: 15px; margin-top: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: inline-flex; align-items: center; gap: 10px; position: relative; z-index: 2;">
+                    <div style="width: 10px; height: 10px; background: #4caf50; border-radius: 50%;"></div>
+                    <span style="font-weight: 600; color: #2c3e50;">شاهد الفيديو التوضيحي</span>
+                    <span style="color: #6b7280; font-size: 0.9rem;">(2:30 دقيقة)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Steps Section -->
+        <section id="steps" class="steps-section">
+            <div class="section-header">
+                <h2>ثلاث خطوات بسيطة للتواصل بسهولة</h2>
+                <p class="section-subtitle">طريقة عمل التطبيق بكل بساطة</p>
+                <div class="underline"></div>
+            </div>
+
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-hand-paper"></i>
+                        </div>
+                        <h3>قم بعمل الإشارة</h3>
+                        <p>قف أمام الكاميرا وقم بعمل إحدى الإشارات المعروفة. يمكنك استخدام الإصبع للإشارة أو استخدام لغة الإشارة الكاملة</p>
+                    </div>
+                    <div class="step-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>التحليل الذكي</h3>
+                        <p>يقوم التطبيق بتحليل حركة يديك باستخدام تقنيات الذكاء الاصطناعي المتطورة للتعرف على الإشارة</p>
+                    </div>
+                    <div class="step-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-comment-dots"></i>
+                        </div>
+                        <h3>الترجمة الفورية</h3>
+                        <p>يتم تحويل الإشارة إلى كلام مسموع أو نص مكتوب بشكل فوري وسلس</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Demo Section -->
+        <section id="video-demo" class="video-demo-section">
+            <div class="section-header">
+                <h2>شاهد التطبيق يعمل</h2>
+                <p class="section-subtitle">فيديو توضيحي يوضح كيفية استخدام التطبيق</p>
+                <div class="underline"></div>
+            </div>
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <div class="video-placeholder">
+                        <i class="fas fa-play-circle"></i>
+                        <p>اضغط للمشاهدة</p>
+                    </div>
+                    <!-- Replace with actual video embed code when available -->
+                    <!-- <iframe width="100%" height="100%" src="https://www.youtube.com/embed/your-video-id" title="كيفية استخدام SignTalk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Highlight -->
+        <section class="features-highlight">
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>سرعة فائقة</h3>
+                <p>ترجمة فورية للإشارات في أقل من ثانية</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h3>دعم متعدد اللغات</h3>
+                <p>يدعم اللغة العربية والإنجليزية ولغات أخرى</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>واجهة سهلة</h3>
+                <p>تصميم بسيط وسهل الاستخدام للجميع</p>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="section-header">
+                <h2>الأسئلة الشائعة</h2>
+                <p class="section-subtitle">إجابات على أكثر الأسئلة شيوعاً</p>
+                <div class="underline"></div>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>كيف يمكنني استخدام الموقع؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>يمكنك استخدام الموقع مباشرة من خلال متصفح الإنترنت الخاص بك. ما عليك سوى فتح الموقع والبدء في استخدام ميزات التعرف على لغة الإشارة وتحويل الصوت إلى نص.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>هل أحتاج إلى تسجيل حساب لاستخدام الموقع؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>لا، يمكنك استخدام الموقع كزائر دون الحاجة إلى تسجيل حساب. ومع ذلك، قد تحتاج إلى تسجيل حساب إذا أردت حفظ سجل الترجمة أو الوصول إلى ميزات إضافية.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>هل الموقع مجاني؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، الموقع مجاني بالكامل مع جميع الميزات المتاحة حاليًا. نحن نهدف إلى توفير أداة سهلة الوصول للجميع.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>ما هي متصفحات الإنترنت المدعومة؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>يدعم الموقع جميع المتصفحات الحديثة مثل Google Chrome و Mozilla Firefox و Microsoft Edge و Safari. للحصول على أفضل تجربة، نوصي باستخدام أحدث إصدار من Google Chrome.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>هل أحتاج إلى كاميرا للاستفادة من ميزة التعرف على الإشارات؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، تحتاج إلى كاميرا ويب لاستخدام ميزة التعرف على لغة الإشارة. تأكد من منح الموقع إذن الوصول إلى الكاميرا عند المطالبة بذلك.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <h2>جاهز للبدء؟</h2>
+            <p>حمل التطبيق الآن وابدأ رحلة التواصل بكل سهولة</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary"><i class="fab fa-google-play"></i> جوجل بلاي</a>
+                <a href="#" class="btn btn-primary"><i class="fab fa-apple"></i> آب ستور</a>
+            </div>
+        </section>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <i class="fas fa-hands-helping"></i>
+                    <span>SignTalk</span>
+                </div>
+                <p class="footer-about">تطبيق SignTalk يهدف إلى تسهيل التواصل مع مجتمع الصم والبكم من خلال ترجمة لغة الإشارة إلى كلام مسموع.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-heading">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-left"></i> الرئيسية</a></li>
+                    <li><a href="about.html"><i class="fas fa-chevron-left"></i> عن التطبيق</a></li>
+                    <li><a href="how-it-works.html"><i class="fas fa-chevron-left"></i> كيف يعمل</a></li>
+                    <li><a href="contact.html"><i class="fas fa-chevron-left"></i> اتصل بنا</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-heading">معلومات التواصل</h3>
+                <ul class="contact-info">
+                    <li><i class="fas fa-map-marker-alt"></i> القاهرة، مصر</li>
+                    <li><i class="fas fa-phone"></i> +20 123 456 7890</li>
+                    <li><i class="fas fa-envelope"></i> info@signtalk.com</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-heading">النشرة البريدية</h3>
+                <p>اشترك في نشرتنا البريدية لتصلك آخر التحديثات</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="بريدك الإلكتروني" required>
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="container">
+                <p>جميع الحقوق محفوظة &copy; 2023 SignTalk. تم التطوير بواسطة <a href="#">فريق SignTalk</a></p>
+                <div class="footer-bottom-links">
+                    <a href="#">سياسة الخصوصية</a>
+                    <span>|</span>
+                    <a href="#">شروط الاستخدام</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script src="js/app.js"></script>
+    <script>
+        // FAQ Toggle Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    // Close all other open items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle current item
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Close FAQ when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.faq-item')) {
+                    faqItems.forEach(item => {
+                        item.classList.remove('active');
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
